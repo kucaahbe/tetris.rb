@@ -1,33 +1,27 @@
 #!/usr/bin/env ruby
 require 'io/console'
+require_relative 'lib/terminal'
+require_relative 'app/tetris'
 
-class Terminal
-
-  CURSOR_MOVEMENT = {
-    up:    'A',
-    down:  'B',
-    right: 'C',
-    left:  'D',
-  }
-
-  def movecursor direction, count=1
-    code = CURSOR_MOVEMENT[direction]
-    fail "unknown cursor direction #{direction}, valid directions: #{CURSOR_MOVEMENT.keys}" unless code
-
-    print "\e[#{count}#{code}"
-  end
-end
-
-current_char = ''
-def get_input
-  current_char = STDIN.getch
-end
-
-terminal = Terminal.new
+# draw game field
+terminal = Terminal.new true
+terminal.placecursor 3, 3
+terminal.draw [
+  [1,1,1,1,1,1,1,1,],
+  [1,1,1,1,1,1,1,1,],
+  [1,0,1,1,1,1,1,1,],
+  [1,0,0,1,1,1,1,1,],
+  [1,0,0,0,1,1,1,1,],
+  [1,0,0,0,1,1,1,1,]
+]
 
 loop do
-  if get_input == '['
-    case get_input
+  terminal.draw 10.times.map {
+    20.times.map { rand 2 }
+  }
+
+  if terminal.get_input == '['
+    case terminal.get_input
     when ?D
       terminal.movecursor :left
     when ?A
@@ -37,5 +31,9 @@ loop do
     when ?B
       terminal.movecursor :down
     end
+  end
+
+  if (terminal.current_input.getbyte(0) == 3)
+    exit 1
   end
 end
