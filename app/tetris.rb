@@ -1,9 +1,6 @@
-class Tetris
-  def initialize width=10, height=20
-    @width = width
-    @height = height
-  end
+require_relative 'tetris_figure'
 
+class Tetris
   I = [
     [1,1,1,1]
   ]
@@ -32,10 +29,26 @@ class Tetris
     [0,1,1]
   ]
 
-  private
+  def initialize width=10, height=20
+    @width = width
+    @height = height
+  end
+
+  def game_field
+    top_line = Array.new(@width+2, 1)
+    middle_line = [1] + Array.new(@width,0) + [1]
+
+    [
+      top_line,
+      *Array.new(@height,middle_line),
+      top_line.dup
+    ]
+  end
 
   def new_figure
-    figure = [I,J,L,O,S,T,Z].sample
+    figure = TetrisFigure.new [I,J,L,O,S,T,Z].sample
     position = rand(3)
+    position.times { figure.rotate }
+    figure.to_a
   end
 end

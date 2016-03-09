@@ -1,3 +1,5 @@
+require 'io/console'
+
 class Terminal
   CURSOR_MOVEMENT = {
     up:    'A',
@@ -27,7 +29,7 @@ class Terminal
     cursor_in_place do
       placecursor start_x, start_y
       data.each do |horizontal|
-        horizontal.each { |point| print point }
+        horizontal.each { |point| print_point point }
         puts
       end
     end
@@ -51,6 +53,20 @@ class Terminal
   end
 
   private
+
+  DRAW_MAP = {
+    0 => ' ',
+    1 => '*'
+  }
+
+  def print_point point
+    drawable = DRAW_MAP[point]
+    if drawable
+      print drawable
+    else
+      fail "unknown point #{point}"
+    end
+  end
 
   def cursor_in_place &block
     send_ansi_cs 's'

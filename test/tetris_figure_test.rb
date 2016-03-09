@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative '../tetris_figure'
+require_relative '../app/tetris_figure'
 
 class TestTetrisFigure < Minitest::Test
 

@@ -1,24 +1,15 @@
 #!/usr/bin/env ruby
-require 'io/console'
 require_relative 'lib/terminal'
+require_relative 'lib/output'
 require_relative 'app/tetris'
 
-# draw game field
-terminal = Terminal.new true
-terminal.placecursor 3, 3
-terminal.draw [
-  [1,1,1,1,1,1,1,1,],
-  [1,1,1,1,1,1,1,1,],
-  [1,0,1,1,1,1,1,1,],
-  [1,0,0,1,1,1,1,1,],
-  [1,0,0,0,1,1,1,1,],
-  [1,0,0,0,1,1,1,1,]
-]
+terminal = Terminal.new
+tetris = Tetris.new
+output = Output.new
+terminal.draw output.field_and_figure tetris.game_field, tetris.new_figure
 
 loop do
-  terminal.draw 10.times.map {
-    20.times.map { rand 2 }
-  }
+  terminal.draw output.field_and_figure tetris.game_field, tetris.new_figure
 
   if terminal.get_input == '['
     case terminal.get_input
